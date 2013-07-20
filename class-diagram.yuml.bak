@@ -1,0 +1,23 @@
+// observation module
+[Observable||+add_observer(Observer);+remove_observer(Observer);-notify_observers(ObservableNotification)]-[note: An object that notify others about something{bg:cornsilk}]
+[Observer||+notify(ObservableNotification)]-[note: An object that listen to Observable notifications (abstract: must implement the notify() method){bg:cornsilk}]
+[ObservableNotification|+Observable source; +data]-[note: Represent the data sent by an Observable{bg:cornsilk}]
+// twitter_manager module
+[TwitterManager||+create_timeline_fetcher();+create_tweet(content reply_to);+send_tweet(tweet)]-[note: Exposes functions to interact with Twitter{bg:cornsilk}]
+[TwitterTimelineFetcher]-[note: Fetch tweets from a Twitter Timeline and provide them to its observers{bg:cornsilk}]
+// aggregator module
+[TimelineAggregator]-[note: Aggregate multiple timelines and provide tweets once for each of its observers{bg:cornsilk}]
+[TweetProcessor||-process(tweet)]-[note: Observe a TimelineAggregator in order to proccess tweets with a TweetProcessing (abstract: must implement the process() method){bg:cornsilk}]
+// main
+[EllipsisAdvisor]-[note: Send advices about ellipsis usage to people who misuse them{bg:cornsilk}]
+// inherithance
+[Observable]^-[TimelineAggregator]
+[Observer]^-[TimelineAggregator]
+[Observable]^-[TwitterTimelineFetcher]
+[Observer]^-[TweetProcessor]
+[TweetProcessor]^-[EllipsisAdvisor]
+//relationship
+[Observable]uses -.->[ObservableNotification]
+[Observer]uses -.->[ObservableNotification]
+[TimelineAggregator]++-1..*>[TwitterTimelineFetcher]
+[EllipsisAdvisor]++-1[TwitterManager]

@@ -1,0 +1,12 @@
+// publisher
+[Publisher|-subscribers|+subscribe(subscriber);+unsubscribe(subscriber);#publish(data)]-[note: Base class to publish data to subscribers{bg:cornsilk}]
+// aggregator module
+[TwitterTimelineFetcher]-[note: Fetch tweets from a Twitter Timeline and provide them to its subscribers{bg:cornsilk}]
+[TimelineAggregator||+receive(tweets)]-[note: Aggregate multiple timelines and provide tweets once for each of its subscribers{bg:cornsilk}]
+// main
+[EllipsisAdvisor||+receive(tweets)]-[note: Send advices about ellipsis usage to people who misuse them{bg:cornsilk}]
+// inherithance
+[Publisher]^-[TimelineAggregator]
+[Publisher]^-[TwitterTimelineFetcher]
+//relationship
+[EllipsisAdvisor]uses -.->[TimelineAggregator]

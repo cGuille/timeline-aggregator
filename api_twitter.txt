@@ -1,0 +1,4 @@
+API choisie : https://github.com/tweepy/tweepy
+
+Exemple d'utilisation :
+	http://code.google.com/p/twitter-repeater/source/browse/repeater.py

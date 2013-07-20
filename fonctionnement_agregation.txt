@@ -1,0 +1,54 @@
+
+J'aimerais créer un objet qui :
+	- aggrège les données de multiples sources ;
+	- envoie chaque donnée aggrégée à ses observeurs ;
+	- élimine des duplications : si une donnée est agrégée plusieurs fois 
+	  (e.g. par des sources ≠), elle n'est transmise qu'une seule fois aux 
+	  observeurs (les duplications sont détectées sur la base d'un id, présent 
+	  dans les données agrégées).
+	
+
+En Python :
+
+On pourrait utiliser un set :
+	Réception d'une donnée d :
+		si d.id n'est pas encore présent set:
+			ajouter d.id dans set
+			envoyer d aux observeurs
+		finsi
+	fin
+
+Problème : comment savoir quand supprimer quels id du set, afin de libérer 
+la mémoire ?
+
+On accepte l'hypothèse que si une donnée est dupliquée, elle le sera durant les
+10 minutes qui suivent sa première apparition.
+
+Le problème devient : comment ne conserver dans un set que les éléments ayant
+été ajoutés il y a moins de M minutes ?
+
+Remplacer l'utilisation du set par un dictionnaire :
+	dict: id → timestamp
+	
+	Réception d'une donnée d :
+		si d.id n'est pas encore présent dans l'ensemble des clés de dict:
+			ajouter dans dict : (d.id → timestamp actuel)
+			envoyer d aux observeurs
+		finsi
+	fin
+	
+	# à exécuter périodiquement :
+	Nettoyer dict:
+		soit vieux_id une liste
+		
+		pour id → time dans dict :
+			si time date d'il y a + de M minutes :
+				ajouter id à vieux_id
+			finsi
+		finpour
+		
+		pour chaque id dans vieux_id
+			supprimer l'association ayant pour clé id dans dict
+		finpour
+	fin
+

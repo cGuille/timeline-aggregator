@@ -1,0 +1,11 @@
+# Twitter oauth details (http://dev.twitter.com/apps)
+username=''
+consumer_key=''
+consumer_secret=''
+access_key=''
+access_secret=''
+
+polling_interval=60 # seconds
+
+debug=False # provide extra print for debug purpose
+
